@@ -22,6 +22,7 @@ class Unlock extends Model
         'ip',
         'status',
     ];
+
     function returnRules($request)
     {
         $rules = [];

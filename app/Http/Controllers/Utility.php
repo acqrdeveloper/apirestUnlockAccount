@@ -11,31 +11,36 @@ namespace App\Http\Controllers;
 
 use App\Project;
 use Exception;
-use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 trait Utility
 {
 
     //Funcion dinamica para obtener configuracion
-    private function getConfig($table)
+    private function getConfig($table, $request)
     {
-        return DB::table('config')->where('action', $table)->first();
+        return DB::table('config')
+            ->join('projects', 'projects.id', 'config.project_id')
+            ->where('projects.name', $request->header('X-Request-Project'))
+            ->where('action', $table)
+            ->first();
     }
+
     //Funcion dinamica para obtener el Id del proyecto
-    private function  getTableId($request)
+    private function getTableId($request)
     {
-        return (int)Project::where("name",$request->header('X-Request-Project'))->pluck("id")[0];
+        return (int)Project::where("name", $request->header('X-Request-Project'))->pluck("id")[0];
     }
 
     //Funcion dinamica para obtener la cantidad de intentos
-    private function calculateAttempts($Model)
+    private function calculateAttempts($Model, $request)
     {
         //Table config
-        $Config = $this->getConfig($Model->getTable());
+        $Config = $this->getConfig($Model->getTable(), $request);
         $rule_interval_attempt = str_replace("'", '', $Config->interval);
         //Model dinamic
-        $Rpta = $Model->select(DB::raw('COUNT(attempt) as intentos'))
+        $Rpta = $Model->select(DB::raw('COUNT(attempt) AS intentos'))
             ->whereBetween('created_at', [$Model->min('created_at'), date('Y-m-d H:i:s')])
             ->where('created_at', '>=', DB::raw($rule_interval_attempt))
             ->where('status', '1')
@@ -48,16 +53,43 @@ trait Utility
     private function create($Model, $request)
     {
         DB::beginTransaction();
+        DB::enableQueryLog();
         try {
             $Model->fill($request->all());
             $Model->ip = $request->ip();
             $Model->project_id = $this->getTableId($request);
             $Model->save();
+            $query = DB::getQueryLog();
+            $this->fnDoLog($query);
             return DB::commit();
         } catch (Exception $e) {
-            echo $e->getMessage();
+            $query = DB::getQueryLog();
+            $this->fnDoLog($e->getMessage(),"error");
+            $this->fnDoLog($query);
             DB::rollBack();
             return DB::statement(" ALTER TABLE " . $Model->getTable() . " AUTO_INCREMENT = " . ($Model->count() + 1));
+        }
+    }
+
+    /**
+     * metodo generico que genera/realiza un log segun el tipo sea indicado
+     * @param $data
+     * @param string $type
+     */
+    public function fnDoLog($data,$type = "info")
+    {
+        //Establecemos zona horaria por defecto
+        date_default_timezone_set('America/Lima');
+        $path = storage_path() . '/logs/';
+        switch ($type) {
+            case 'error':
+                Log::useFiles($path . 'error.log');
+                Log::error($data);
+                break;
+            default:
+                Log::useFiles($path . 'info.log');
+                Log::info($data);
+                break;
         }
     }
 

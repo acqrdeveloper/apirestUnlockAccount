@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use \Firebase\JWT\JWT;
+use Carbon\Carbon;
+use Firebase\JWT\JWT;
+use Exception;
 
-class FirebaseController
+class FirebaseController extends Controller
 {
     function firebaseGenerate()
     {
         $token = array(
-            'sub' => '1234567890',
-            'name' => 'Alex Christian',
+            'name' => 'Corporacion Sapia',
+            'created_at' => '2018-02-26 00:00:00',
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'admin' => true,
-            'jti' => '9ea1d8c8-522e-4cfc-87e9-a2f891a2c61d',
             'iat' => 1,
-            'exp' => time() + (int)env("TIME_JWT"),
+            'exp' => time() + (int)config()["app"]["jwt_time"],
         );
 
         /**
@@ -23,7 +25,7 @@ class FirebaseController
          * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40
          * for a list of spec-compliant algorithms.
          */
-        $jwt = JWT::encode($token, env("KEY_JWT"));
+        $jwt = JWT::encode($token, config()["app"]["jwt_key"]);
         /*
          NOTE: This will now be an object instead of an associative array. To get
          an associative array, you will need to cast it as such:
@@ -37,12 +39,19 @@ class FirebaseController
          *
          * Source: http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#nbfDef
          */
-        JWT::$leeway = (int)env("TIME_JWT"); // $leeway in seconds
+        JWT::$leeway = (int)config()["app"]["jwt_time"]; // $leeway in seconds
         return ["token" => $jwt];
     }
 
     function firebaseValidate($request)
     {
-        return (is_object(JWT::decode($request->header("X-Access-Token-Lvl"), env("KEY_JWT"), ['HS256'])));
+        $response = null;
+        try {
+            $validate = (is_object(JWT::decode($request->header("X-Access-Token-Lvl"), config()["app"]["jwt_key"], ['HS256'])));
+            if ($validate) $response = ["status" => true, "data" => "Token generado"];
+        } catch (Exception $e) {
+            $response = ["status" => false, "data" => "El token ha expirado o no tiene autorizacion"];
+        }
+        return $response;
     }
 }

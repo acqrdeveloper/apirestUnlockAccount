@@ -21,7 +21,7 @@ class UnlockController extends Controller
     function createLog(Request $request)
     {
         $Model = new Unlock();
-        if ($this->calculateAttempts($Model) <= 2) {
+        if ($this->calculateAttempts($Model,$request) <= 2) {
             return $this->create($Model, $request);
         } else {
             $msg = "Estimado $request->username, ustéd ha superado el limite de intentos para desbloquear";

@@ -9,9 +9,8 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\SearchRequest;
 use App\Search;
-use Illuminate\Http\Request;
-use Exception;
 
 class SearchController extends Controller
 {
@@ -19,7 +18,7 @@ class SearchController extends Controller
     use Utility;
 
     //Funcion crear log
-    function createLog(Request $request)
+    function createLog(SearchRequest $request)
     {
         $Model = new Search();
         return $this->create($Model, $request);

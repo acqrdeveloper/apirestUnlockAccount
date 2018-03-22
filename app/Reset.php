@@ -25,21 +25,4 @@ class Reset extends Model
         'code_security',
     ];
 
-    function returnRules($request)
-    {
-        $rules = [];
-        switch ($request->method()) {
-            case "POST":
-                $rules = [
-                    "username" => "required",
-                    "description" => "required",
-                    "message" => "required",
-                    "ip" => "required",
-                    "status" => "required",
-                ];
-                break;
-        };
-        return $rules;
-    }
-
 }

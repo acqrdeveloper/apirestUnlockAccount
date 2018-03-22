@@ -28,6 +28,9 @@ return [
 
     'env' => env('APP_ENV', 'production'),
 
+    'jwt_key' => env('KEY_JWT'),
+    'jwt_time' => env('TIME_JWT'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
@@ -177,9 +180,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        Laravel\Passport\PassportServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-        Barryvdh\Cors\ServiceProvider::class,
 
     ],
 

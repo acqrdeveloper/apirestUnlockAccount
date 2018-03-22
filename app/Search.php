@@ -21,18 +21,4 @@ class Search extends Model
         'ip',
         'status',
     ];
-    function returnRules($request)
-    {
-        $rules = [];
-        switch ($request->method()) {
-            case "POST":
-                $rules = [
-                    "description" => "required",
-                    "message" => "required",
-                    "status" => "required",
-                ];
-                break;
-        };
-        return $rules;
-    }
 }
