@@ -27,9 +27,8 @@ class ResetRequest extends FormRequest
         switch ($this->method()) {
             case "POST":
                 $rules = [
-                    "username" => "required",
                     "description" => "required",
-                    "message" => "required",
+                    "message" => "nullable",
                     "status" => "required",
                 ];
                 break;

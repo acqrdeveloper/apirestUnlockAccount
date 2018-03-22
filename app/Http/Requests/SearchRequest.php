@@ -28,7 +28,7 @@ class SearchRequest extends FormRequest
             case "POST":
                 $rules = [
                     "description" => "required",
-                    "message" => "null",
+                    "message" => "nullable",
                     "status" => "required",
                 ];
                 break;
