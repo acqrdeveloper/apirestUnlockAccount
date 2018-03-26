@@ -14,8 +14,6 @@ use App\Search;
 
 class SearchController extends Controller
 {
-    //Metodos utiles
-    use Utility;
 
     //Funcion crear log
     function createLog(SearchRequest $request)

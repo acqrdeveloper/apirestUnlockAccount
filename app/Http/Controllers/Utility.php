@@ -17,8 +17,18 @@ use Illuminate\Support\Facades\Log;
 trait Utility
 {
 
-    //Funcion dinamica para obtener configuracion
-    private function getConfig($table, $request)
+    //Funcion dinamica para obtener configuracion general
+    private function getConfigProjectGeneral($request)
+    {
+        $return = DB::table('config_general')
+            ->join('projects', 'projects.id', 'config_general.project_id')
+            ->where('projects.name', $request->header('X-Request-Project'))
+            ->first();
+        return response()->json($return);
+    }
+
+    //Funcion dinamica para obtener configuracion de una tablka por proyecto
+    private function getConfigProject($table = null, $request)
     {
         return DB::table('config')
             ->join('projects', 'projects.id', 'config.project_id')
@@ -37,7 +47,7 @@ trait Utility
     private function calculateAttempts($Model, $request)
     {
         //Table config
-        $Config = $this->getConfig($Model->getTable(), $request);
+        $Config = $this->getConfigProject($Model->getTable(), $request);
         $rule_interval_attempt = str_replace("'", '', $Config->interval);
         //Model dinamic
         $Rpta = $Model->select(DB::raw('COUNT(attempt) AS intentos'))
@@ -50,7 +60,7 @@ trait Utility
     }
 
     //Funcion dinamica para hacer el insert
-    private function create($Model, $request)
+    function create($Model, $request)
     {
         DB::beginTransaction();
         DB::enableQueryLog();
@@ -64,7 +74,7 @@ trait Utility
             return DB::commit();
         } catch (Exception $e) {
             $query = DB::getQueryLog();
-            $this->fnDoLog($e->getMessage(),"error");
+            $this->fnDoLog($e->getMessage(), "error");
             $this->fnDoLog($query);
             DB::rollBack();
             return DB::statement(" ALTER TABLE " . $Model->getTable() . " AUTO_INCREMENT = " . ($Model->count() + 1));
@@ -76,7 +86,7 @@ trait Utility
      * @param $data
      * @param string $type
      */
-    public function fnDoLog($data,$type = "info")
+    public function fnDoLog($data, $type = "info")
     {
         //Establecemos zona horaria por defecto
         date_default_timezone_set('America/Lima');

@@ -14,8 +14,6 @@ use Illuminate\Http\Request;
 
 class UnlockController extends Controller
 {
-    //Metodos utiles
-    use Utility;
 
     //Funcion crear log
     function createLog(Request $request)

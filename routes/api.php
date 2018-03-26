@@ -13,20 +13,34 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::group(['middleware' => ['cors']], function () {
+    if (!request()->ajax()) {
+        Route::get('/', function () {
+            return response()->view("errors.404");
+        });
+    }
+});
 
 Route::group(['middleware' => ['cors:api']], function () {
 
-    Route::get("/generate-token", "FirebaseController@firebaseGenerate");
+    if (!request()->ajax()) {
+        Route::get('/{any}', function () {
+            return response()->view("errors.404");
+        });
+    } else {
+        Route::get("/generate-token", "FirebaseController@firebaseGenerate");
+        Route::get("/get-config", "Controller@configProjectGeneral");
 
-    Route::group(['middleware' => ['verify.headers:api']], function () {
+        Route::group(['middleware' => ['verify.headers:api']], function () {
 
-        //Unlock
-        Route::post("/create-log-unlock", "UnlockController@createLog");
-        //Reset
-        Route::post("/create-log-reset", "ResetController@createLog");
-        //Search
-        Route::post("/create-log-search", "SearchController@createLog");
+            //Unlock
+            Route::post("/create-log-unlock", "UnlockController@createLog");
+            //Reset
+            Route::post("/create-log-reset", "ResetController@createLog");
+            //Search
+            Route::post("/create-log-search", "SearchController@createLog");
 
-    });
+        });
+    }
 
 });
