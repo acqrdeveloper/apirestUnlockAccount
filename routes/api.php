@@ -32,14 +32,12 @@ Route::group(['middleware' => ['cors:api']], function () {
         Route::get("/get-config", "Controller@configProjectGeneral");
 
         Route::group(['middleware' => ['verify.headers:api']], function () {
-
             //Unlock
             Route::post("/create-log-unlock", "UnlockController@createLog");
             //Reset
             Route::post("/create-log-reset", "ResetController@createLog");
             //Search
             Route::post("/create-log-search", "SearchController@createLog");
-
         });
     }
 
