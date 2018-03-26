@@ -60,7 +60,7 @@ trait Utility
     }
 
     //Funcion dinamica para hacer el insert
-    function create($Model, $request)
+    private function create($Model, $request)
     {
         DB::beginTransaction();
         DB::enableQueryLog();
@@ -88,8 +88,6 @@ trait Utility
      */
     public function fnDoLog($data, $type = "info")
     {
-        //Establecemos zona horaria por defecto
-        date_default_timezone_set('America/Lima');
         $path = storage_path() . '/logs/';
         switch ($type) {
             case 'error':

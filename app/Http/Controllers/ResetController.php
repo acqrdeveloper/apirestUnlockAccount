@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 
 class ResetController extends Controller
 {
-
+    use Utility;
     //Funcion crear log
     function createLog(Request $request)
     {
