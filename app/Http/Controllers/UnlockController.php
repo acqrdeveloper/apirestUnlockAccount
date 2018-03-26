@@ -24,7 +24,7 @@ class UnlockController extends Controller
         } else {
             $msg = "Estimado $request->username, ustéd ha superado el limite de intentos para desbloquear";
             $request->request->set("description", $request->username . " no pudo desbloquear su cuenta");
-            $request->request->set("status", 2);
+            $request->request->set("status", 0);
             $request->request->add(["message" => $msg]);
             $this->create($Model, $request);
             return response()->json($msg, 412);

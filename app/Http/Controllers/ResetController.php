@@ -24,7 +24,7 @@ class ResetController extends Controller
         } else {
             $msg = "Estimado $request->username, ustéd ha superado el limite de intentos para resetear su contraseña";
             $request->request->set('description', $request->username . " no pudo resetear su contraseña");
-            $request->request->set('status', 2);
+            $request->request->set('status', 0);
             $request->request->add(['message' => $msg]);
             $this->create($Model, $request);
             return response()->json($msg, 412);
