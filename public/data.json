@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "name": "Alex Christian",
+    "email": "aquisper.developer@gmail.com",
+    "username": "aquisper",
+    "age": "24",
+    "from": "lima",
+    "dni": "72482060",
+    "area": "mesa de ayuda",
+    "last_session": "2018/03/31",
+    "time_locked":"00:05:00",
+    "quantity_locked":"3",
+    "phone_number":"955588297"
+  },
+  {
+    "id": 2,
+    "name": "Deysi Carolina",
+    "email": "dquispe@gmail.com",
+    "username": "dquispe",
+    "age": "19",
+    "from": "ate",
+    "dni": "43170962",
+    "area": "administrativo",
+    "last_session": "2018/03/31",
+    "time_locked":"00:01:03",
+    "quantity_locked":"2",
+    "phone_number":"987436992"
+  },
+  {
+    "id": 3,
+    "name": "Diana Veronica",
+    "email": "dvquispe@gmail.com",
+    "username": "dvquispe",
+    "age": "20",
+    "from": "miraflores",
+    "dni": "10651126",
+    "area": "tesoreria",
+    "last_session": "2018/03/31",
+    "time_locked":"00:00:45",
+    "quantity_locked":"8",
+    "phone_number":"944827492"
+  },
+  {
+    "id": 4,
+    "name": "Diana Velasquez",
+    "email": "dvquispe@gmail.com",
+    "username": "dvquispe",
+    "age": "20",
+    "from": "miraflores",
+    "dni": "10651126",
+    "area": "tesoreria",
+    "last_session": "2018/03/31",
+    "time_locked":"00:00:45",
+    "quantity_locked":"8",
+    "phone_number":"944827492"
+  }
+]
