@@ -52,6 +52,7 @@ trait Utility
         //Model dinamic
         $Rpta = $Model->select(DB::raw('COUNT(attempt) AS intentos'))
             ->whereBetween('created_at', [$Model->min('created_at'), date('Y-m-d H:i:s')])
+            ->where('username', $request->username)
             ->where('created_at', '>=', DB::raw($rule_interval_attempt))
             ->where('status', '1')
             ->first();

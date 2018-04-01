@@ -15,19 +15,31 @@ use Illuminate\Http\Request;
 class UnlockController extends Controller
 {
     use Utility;
-    //Funcion crear log
+
+    //Log
     function createLog(Request $request)
     {
         $Model = new Unlock();
-        if ($this->calculateAttempts($Model,$request) <= 2) {
+        if ($this->calculateAttempts($Model, $request) <= 2) {
             return $this->create($Model, $request);
         } else {
-            $msg = "Estimado $request->username, ustéd ha superado el limite de intentos para desbloquear";
-            $request->request->set("description", $request->username . " no pudo desbloquear su cuenta");
+            $msg = "Estimado $request->username, ha superado el limite de intentos para desbloquear";
+            $request->request->set("description", "$request->username no pudo desbloquear su cuenta");
             $request->request->set("status", 0);
             $request->request->add(["message" => $msg]);
             $this->create($Model, $request);
             return response()->json($msg, 412);
+        }
+    }
+
+    //User
+    function unlock(Request $request)
+    {
+        $Model = new Unlock();
+        if ($this->calculateAttempts($Model, $request) <= 2) {
+            return response()->json("Estimado $request->username, su cuenta ha sido desbloqueada con exito", 200);
+        } else {
+            return response()->json("Estimado $request->username, ha superado el limite de intentos para desbloquear", 412);
         }
     }
 
