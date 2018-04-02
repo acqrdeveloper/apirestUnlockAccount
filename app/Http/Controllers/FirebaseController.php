@@ -47,7 +47,7 @@ class FirebaseController extends Controller
     {
         $response = null;
         try {
-            $validate = (is_object(JWT::decode($request->header("X-Access-Token-Lvl"), config()["app"]["jwt_key"], ['HS256'])));
+            $validate = (is_object(JWT::decode($request->header("X-Access-Token"), config()["app"]["jwt_key"], ['HS256'])));
             if ($validate) $response = ["status" => true, "data" => "Token generado"];
         } catch (Exception $e) {
             $response = ["status" => false, "data" => "El token ha expirado o no tiene autorizacion"];

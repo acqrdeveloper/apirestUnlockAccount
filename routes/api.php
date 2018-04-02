@@ -11,30 +11,22 @@
 |
 */
 
-//Route::group(['middleware' => ['cors']], function () {
-//    if (!request()->ajax()) {
-//        Route::get('/', function () {
-//            return response()->view("errors.404");
-//        });
-//    }
-//});
-
 Route::group(['middleware' => ['cors:api']], function () {
 
-//    if (!request()->ajax()) {
-//        Route::get('/{any}', function () {
-//            return response()->view("errors.404");
-//        });
-//    } else {
+    if (request()->ajax()) {
 
         Route::get("/generate-token", "FirebaseController@firebaseGenerate");
         Route::get("/get-config", "Controller@configProjectGeneral");
 
-        Route::get("/active-directory/search","SearchController@search");
-        Route::get("/active-directory/unlock","UnlockController@unlock");
-        Route::get("/active-directory/reset","ResetController@reset");
-
         Route::group(['middleware' => ['verify.headers:api']], function () {
+
+            Route::get("/active-directory/validate-reset",function(){
+                return response()->json(true,200);
+            });
+
+            Route::get("/active-directory/search","SearchController@search");
+            Route::get("/active-directory/unlock","UnlockController@unlock");
+            Route::get("/active-directory/reset","ResetController@reset");
 
             Route::post("/create-log-unlock", "UnlockController@createLog");//Unlock
             Route::post("/create-log-reset", "ResetController@createLog");//Reset
@@ -42,6 +34,12 @@ Route::group(['middleware' => ['cors:api']], function () {
 
         });
 
-//    }
+    } else {
+
+        Route::get('{any}', function () {
+            return response()->view("errors.404");
+        });
+
+    }
 
 });

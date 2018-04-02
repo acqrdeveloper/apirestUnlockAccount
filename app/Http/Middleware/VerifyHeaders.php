@@ -47,7 +47,7 @@ class VerifyHeaders
 
     private function verifyToken($request)
     {
-        if ($request->hasHeader('X-Access-Token-Lvl')) {
+        if ($request->hasHeader('X-Access-Token')) {
             if ((new FirebaseController())->firebaseValidate($request)["status"]) {
                 $response = ["status" => true, "data" => ""];
             } else {

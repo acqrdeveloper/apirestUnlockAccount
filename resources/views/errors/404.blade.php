@@ -26,8 +26,6 @@
     <meta name="theme-color" content="#ffffff">
     <!-- Styles -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!-- Customize -->
     <style>
         footer.sticky-footer {
@@ -39,7 +37,6 @@
             background-color: #e9ecef;
             line-height: 55px;
         }
-
         @media (min-width: 992px) {
             footer.sticky-footer {
                 width: calc(100% - 250px);
@@ -49,18 +46,18 @@
 </head>
 <body style="background: url({{asset('background/background_01.jpg')}});">
 <div class="container pt-5">
-    <div class="text-center m-5">
+    <div class="text-center m-5" style="padding-top: 125px">
         <img class="img-thumbnail" style="background-color: transparent;border: 0;width: 150px" src="{{asset('logo.svg')}}">
+        <p class="mt-5 text-white h5" style="letter-spacing: 1px">Estimado usuario, esta página no ha sido encontrada</p>
     </div>
-    <div class="row">
-        <div class="col-12 text-center text-white">
-            <div class="mt-5">
-                <h1>Estimado usuario, esta página no ha sido encontrada</h1>
-            </div>
-        </div>
-    </div>
-    <footer class="sticky-footer w-100 mt-5"
-            style="background-color: transparent !important;color:#f5f5f5; letter-spacing: 1px">
+    {{--<div class="row">--}}
+        {{--<div class="col-12 text-center text-white">--}}
+            {{--<div class="mt-2">--}}
+                {{--<p class="h4">Estimado usuario, esta página no ha sido encontrada</p>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
+    <footer class="sticky-footer w-100 mt-5" style="background-color: transparent !important;color:#f5f5f5; letter-spacing: 1px">
         <div class="container">
             <div class="text-center">
                 <small>Copyright © Corporación Sapia {{date("Y")}}</small>
