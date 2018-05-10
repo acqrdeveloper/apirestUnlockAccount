@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Project;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -82,11 +81,7 @@ trait Utility
         }
     }
 
-    /**
-     * metodo generico que genera/realiza un log segun el tipo sea indicado
-     * @param $data
-     * @param string $type
-     */
+    //Funcion para crear los archivos .log
     public function fnDoLog($data, $type = "info")
     {
         $path = storage_path() . '/logs/';
